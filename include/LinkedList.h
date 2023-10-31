@@ -2,6 +2,7 @@
 #define LAB_2_INCLUDE_LINKEDLIST_H
 
 #include "Node.h"
+#include "Random.h"
 
 template<typename T>
 class LinkedList {
