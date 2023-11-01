@@ -1,15 +1,17 @@
-#define SIZE 10
-
-#include <iostream>
-
 #include "../include/LinkedList.h"
 
 int main()
 { 
     LinkedList<std::string> lst;
-    lst.push_tail("D");
-    lst.push_tail(generateRandomString(generateRandomNumber(1, 10)));
-    lst.push_tail("text.txt");
-    lst.print_path();
+    
+    lst.pushTail("D");
+    lst.pushTail("Python_lab");
+    lst.pushTail("python_lab");
+    lst.pushTail("datasets");
+    lst.pushTail("dataset.csv");
+
+    lst.printPath();
+    lst.isCorrectPath();
+
     return 0;
 }

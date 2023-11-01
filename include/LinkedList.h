@@ -1,6 +1,9 @@
 #ifndef LAB_2_INCLUDE_LINKEDLIST_H
 #define LAB_2_INCLUDE_LINKEDLIST_H
 
+#include <iostream>
+#include <filesystem>
+
 #include "Node.h"
 #include "Random.h"
 
@@ -11,21 +14,23 @@ class LinkedList {
 public:
     LinkedList();
 
+    LinkedList(int length);
+
     LinkedList(const LinkedList& other);
 
     LinkedList& operator=(const LinkedList& other);
 
-    void push_head(T data);
+    void pushHead(T data);
 
-    void push_head(const LinkedList& other);
+    void pushHead(const LinkedList& other);
 
-    void push_tail(T data);
+    void pushTail(T data);
 
-    void push_tail(const LinkedList& other);
+    void pushTail(const LinkedList& other);
 
-    void pop_head();
+    void popHead();
 
-    void pop_tail();
+    void popTail();
 
     Node<T>* at(int index);
 
@@ -37,11 +42,13 @@ public:
 
     Node<T>* earse(int index);
 
-    void delete_Node(T data);
+    void deleteNode(T data);
     
-    void print() const;
+    void printPath() const;
 
-    void print_path() const;
+    std::string createPath() const;
+
+    bool isCorrectPath() const;
 
     void clear();
 
@@ -55,12 +62,20 @@ LinkedList<T>::LinkedList() {
 }
 
 template<typename T>
+LinkedList<T>::LinkedList(int length) : LinkedList() {
+    pushTail(randomSelectionFromArray(disks, 3));
+    for (int i = 0; i < length - 1; ++i)
+        pushTail(generateRandomString(generateRandomNumber(1, 10)));
+    tail_->data += randomSelectionFromArray(file_extensions, 16);
+}
+
+template<typename T>
 LinkedList<T>::LinkedList(const LinkedList& other) {
     head_ = nullptr;
     tail_ = nullptr;
     Node<T>* tmp = other.head_;
     while (tmp) {
-        push_tail(tmp->data);
+        pushTail(tmp->data);
         tmp = tmp->next;
     }
 }
@@ -71,7 +86,7 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other) {
         clear();
         Node<T>* tmp = other.head_;
         while (tmp) {
-            push_tail(tmp->data);
+            pushTail(tmp->data);
             tmp = tmp->next;
         }
     }
@@ -79,7 +94,7 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other) {
 }
 
 template<typename T>
-void LinkedList<T>::push_head(T data) {
+void LinkedList<T>::pushHead(T data) {
     Node<T>* ptr = new Node<T>(data);
     ptr->next = head_;
     if (head_)
@@ -90,16 +105,16 @@ void LinkedList<T>::push_head(T data) {
 }
 
 template<typename T>
-void LinkedList<T>::push_head(const LinkedList<T>& other) {
+void LinkedList<T>::pushHead(const LinkedList<T>& other) {
     Node<T>* tmp = other.tail_;
     while (tmp) {
-        push_head(tmp->data);
+        pushHead(tmp->data);
         tmp = tmp->prev;
     }
 }
 
 template<typename T>
-void LinkedList<T>::push_tail(T data) {
+void LinkedList<T>::pushTail(T data) {
     Node<T>* ptr = new Node<T>(data);
     ptr->prev = tail_;
     if (tail_)
@@ -110,16 +125,16 @@ void LinkedList<T>::push_tail(T data) {
 }
 
 template<typename T>
-void LinkedList<T>::push_tail(const LinkedList<T>& other) {
+void LinkedList<T>::pushTail(const LinkedList<T>& other) {
     Node<T>* tmp = other.head_;
     while (tmp) {
-        push_tail(tmp->data);
+        pushTail(tmp->data);
         tmp = tmp->next;
     }
 }
 
 template<typename T>
-void LinkedList<T>::pop_head() {
+void LinkedList<T>::popHead() {
     if (!head_) return;
     Node<T>* ptr = head_->next;
     if (ptr)
@@ -131,7 +146,7 @@ void LinkedList<T>::pop_head() {
 }
 
 template<typename T>
-void LinkedList<T>::pop_tail() {
+void LinkedList<T>::popTail() {
     if (!tail_) return;
     Node<T>* ptr = tail_->prev;
     if (ptr)
@@ -169,10 +184,10 @@ template<typename T>
 void LinkedList<T>::insert(int index, T data) {
     Node<T>* right = at(index);
     if (!right)
-        return push_tail(data);
+        return pushTail(data);
     Node<T>* left = right->prev;
     if (!left)
-        return push_head(data);
+        return pushHead(data);
 
     Node<T>* ptr = new Node<T>(data);
     ptr->prev = left;
@@ -188,11 +203,11 @@ Node<T>* LinkedList<T>::earse(int index) {
         return nullptr;
     }
     if (!ptr->prev) {
-        pop_head();
+        popHead();
         return head_;
     }
     if (!ptr->next) {
-        pop_tail();
+        popTail();
         return nullptr;
     }
 
@@ -206,7 +221,7 @@ Node<T>* LinkedList<T>::earse(int index) {
 }
 
 template<typename T>
-void LinkedList<T>::delete_Node(T data) {
+void LinkedList<T>::deleteNode(T data) {
     Node<T>* tmp = head_;
     int index = 0;
     while (tmp) {
@@ -220,43 +235,51 @@ void LinkedList<T>::delete_Node(T data) {
 }
 
 template<typename T>
-void LinkedList<T>::print() const {
-    Node<T>* tmp = head_;
-    while (tmp) {
-        std::cout << tmp->data << " ";
-        tmp = tmp->next;
-    }
-    std::cout << std::endl;
-}
-
-template<typename T>
-void LinkedList<T>::print_path() const {
-    Node<T>* tmp = head_;
-    if (!tmp) {
-        std::cout << "List is empty" << std::endl;
-        return;
-    }
-    std::cout << tmp->data << ":\\";
-    tmp = tmp->next;
-    while (tmp) {
-        if (!tmp->next) {
-            std::cout << tmp->data;
-            break;
-        }
-        std::cout << tmp->data << "\\";
-        tmp = tmp->next;
-    }
-}
-
-template<typename T>
 void LinkedList<T>::clear() {
     while (head_)
-        pop_head();
+        popHead();
 }
 
 template<typename T>
 LinkedList<T>::~LinkedList() {
     clear();
+}
+
+template<typename T>
+std::string LinkedList<T>::createPath() const {
+    std::string path;
+    Node<T>* tmp = head_;
+    if (!tmp) {
+        std::cout << "List is empty" << std::endl;
+        return "";
+    }
+    path += tmp->data + ":\\";
+    tmp = tmp->next;
+    while (tmp) {
+        if (!tmp->next) {
+            path += tmp->data;
+            break;
+        }
+        path += tmp->data + "\\";
+        tmp = tmp->next;
+    }
+    return path;
+}
+
+template<typename T>
+void LinkedList<T>::printPath() const {
+    std::cout << createPath() << std::endl;
+}
+
+template<typename T>
+bool LinkedList<T>::isCorrectPath() const {
+    std::string path = createPath();
+    if (std::filesystem::exists(path)) {
+        std::cout << "File exists" << std::endl;
+        return true;
+    }
+    std::cout << "File doesn't exist" << std::endl;
+    return false;
 }
 
 #endif
