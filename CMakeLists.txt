@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(Polyline CXX)
+project(LinkedList CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -14,4 +14,4 @@ if(MSVC)
     endif()
 endif()
 
-add_executable(main "src/main.cc"  "include/Random.h")
+add_executable(main "src/main.cc")

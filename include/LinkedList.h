@@ -16,6 +16,8 @@ public:
 
     LinkedList(int length);
 
+    LinkedList(int length, std::string disk, std::string file_name);
+
     LinkedList(const LinkedList& other);
 
     LinkedList& operator=(const LinkedList& other);
@@ -67,6 +69,14 @@ LinkedList<T>::LinkedList(int length) : LinkedList() {
     for (int i = 0; i < length - 1; ++i)
         pushTail(generateRandomString(generateRandomNumber(1, 10)));
     tail_->data += randomSelectionFromArray(file_extensions, 16);
+}
+
+template<typename T>
+LinkedList<T>::LinkedList(int length, std::string disk, std::string file_name) : LinkedList() {
+    pushTail(disk);
+    for (int i = 0; i < length - 2; ++i)
+        pushTail(generateRandomString(generateRandomNumber(1, 10)));
+    pushTail(file_name);
 }
 
 template<typename T>

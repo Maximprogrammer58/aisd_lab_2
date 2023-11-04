@@ -4,8 +4,8 @@
 #include <string>
 #include <random>
 
-std::string disks[3] = {"D", "C", "E"};
-std::string file_extensions[16] = { ".jpg", ".png", ".bmp", ".gif", ".tif", ".doc", ".xls", ".pdf", ".txt", ".mp3", ".mp4", ".ppt", ".html", ".py", ".cc", ".h"};
+std::string disks[3] = { "D", "C", "E" };
+std::string file_extensions[16] = { ".jpg", ".png", ".bmp", ".gif", ".tif", ".doc", ".xls", ".pdf", ".txt", ".mp3", ".mp4", ".ppt", ".html", ".py", ".cc", ".h" };
 
 int generateRandomNumber(int min, int max) {
     std::random_device rd;
