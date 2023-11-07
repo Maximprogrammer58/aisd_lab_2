@@ -44,7 +44,7 @@ public:
 
     void insert(int index, T data);
 
-    Node<T>* earse(int index);
+    Node<T>* erase(int index);
 
     void deleteNode(T data);
     
@@ -215,7 +215,7 @@ void LinkedList<T>::insert(int index, T data) {
 }
 
 template<typename T>
-Node<T>* LinkedList<T>::earse(int index) {
+Node<T>* LinkedList<T>::erase(int index) {
     Node<T>* ptr = at(index);
     if (!ptr) {
         return nullptr;
@@ -244,7 +244,7 @@ void LinkedList<T>::deleteNode(T data) {
     int index = 0;
     while (tmp) {
         if (tmp->data == data) {
-            tmp = earse(index);
+            tmp = erase(index);
             continue;
         }
         index++;

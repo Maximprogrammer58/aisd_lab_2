@@ -29,6 +29,10 @@ bool isCorrectPath(std::string path) {
     return false;
 }
 
+void printPath(std::string path) {
+    std::cout << path << std::endl;
+}
+
 void createFileNotExist(Node<std::string>* head) {
     std::string filepath;
     Node<std::string>* tmp = head;
@@ -51,24 +55,23 @@ void createFileNotExist(Node<std::string>* head) {
     ofs.close();
 }
 
-int main()
-{ 
+int main() { 
     LinkedList<std::string> lst;
     lst.pushTail("D");
     lst.pushTail("Python_lab");
     lst.pushTail("python_lab");
     lst.pushTail("datasets");
     lst.pushTail("dataset.csv");
-    std::cout << createPath(lst.head()) << std::endl;
+    printPath(createPath(lst.head()));
     isCorrectPath(createPath(lst.head()));
 
     LinkedList<std::string> rand_lst1(5, "C", "main.cc");
-    std::cout << createPath(rand_lst1.head()) << std::endl;
+    printPath(createPath(rand_lst1.head()));
     isCorrectPath(createPath(rand_lst1.head()));
 
     LinkedList<std::string> rand_lst2(3, "D", "example.cc");
     createFileNotExist(rand_lst2.head());
-    std::cout << createPath(rand_lst2.head()) << std::endl;
+    printPath(createPath(rand_lst2.head()));
     isCorrectPath(createPath(rand_lst2.head()));
 
     return 0;
