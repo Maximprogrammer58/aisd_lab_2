@@ -11,7 +11,8 @@
 template<typename T>
 class LinkedList {
     Node<T> *head_, *tail_;
-  
+    size_t size_;
+ 
 public:
     LinkedList();
 
@@ -35,6 +36,8 @@ public:
 
     Node<T>* at(int index);
 
+    size_t size() const;
+
     T& operator[](int index);
 
     const T& operator[](int index) const;
@@ -45,13 +48,7 @@ public:
 
     void deleteNode(T data);
     
-    void printPath() const;
-
-    void createFileNotExist() const;
-
-    std::string createPath() const;
-
-    bool isCorrectPath() const;
+    Node<T>* head() const;
 
     void clear();
 
@@ -62,6 +59,7 @@ template<typename T>
 LinkedList<T>::LinkedList() {
     head_ = nullptr;
     tail_ = nullptr;
+    size_ = 0;
 }
 
 template<typename T>
@@ -76,6 +74,7 @@ template<typename T>
 LinkedList<T>::LinkedList(const LinkedList& other) {
     head_ = nullptr;
     tail_ = nullptr;
+    size_ = 0;
     Node<T>* tmp = other.head_;
     while (tmp) {
         pushTail(tmp->data);
@@ -105,6 +104,7 @@ void LinkedList<T>::pushHead(T data) {
     if (!tail_)
         tail_ = ptr;
     head_ = ptr;
+    size_++;
 }
 
 template<typename T>
@@ -125,6 +125,7 @@ void LinkedList<T>::pushTail(T data) {
     if (!head_)
         head_ = ptr;
     tail_ = ptr;
+    size_++;
 }
 
 template<typename T>
@@ -146,6 +147,7 @@ void LinkedList<T>::popHead() {
         tail_ = nullptr;
     delete head_;
     head_ = ptr;
+    size_--;
 }
 
 template<typename T>
@@ -158,10 +160,23 @@ void LinkedList<T>::popTail() {
         head_ = nullptr;
     delete tail_;
     tail_ = ptr;
+    size_--;
+}
+
+template<typename T>
+size_t  LinkedList<T>::size() const {
+    return size_;
+}
+
+template<typename T>
+Node<T>* LinkedList<T>::head() const {
+    return head_;
 }
 
 template<typename T>
 Node<T>* LinkedList<T>::at(int index) {
+    if ((index < 0) && (index >= size_)) 
+        throw std::out_of_range("Index out of range");
     Node<T>* ptr = head_;
     int i = 0;
     while (i != index) {
@@ -239,6 +254,7 @@ void LinkedList<T>::deleteNode(T data) {
 
 template<typename T>
 void LinkedList<T>::clear() {
+    size_ = 0;
     while (head_)
         popHead();
 }
@@ -246,66 +262,6 @@ void LinkedList<T>::clear() {
 template<typename T>
 LinkedList<T>::~LinkedList() {
     clear();
-}
-
-template<typename T>
-std::string LinkedList<T>::createPath() const {
-    std::string path;
-    Node<T>* tmp = head_;
-    if (!tmp) {
-        std::cout << "List is empty" << std::endl;
-        return "";
-    }
-    path += tmp->data + ":\\";
-    tmp = tmp->next;
-    while (tmp) {
-        if (!tmp->next) {
-            path += tmp->data;
-            break;
-        }
-        path += tmp->data + "\\";
-        tmp = tmp->next;
-    }
-    return path;
-}
-
-template<typename T>
-void LinkedList<T>::printPath() const {
-    std::cout << createPath() << std::endl;
-}
-
-template<typename T>
-bool LinkedList<T>::isCorrectPath() const {
-    std::string path = createPath();
-    if (std::filesystem::exists(path)) {
-        std::cout << "File exists" << std::endl;
-        return true;
-    }
-    std::cout << "File doesn't exist" << std::endl;
-    return false;
-}
-
-template<typename T>
-void LinkedList<T>::createFileNotExist() const {
-    std::string filepath;
-    Node<T>* tmp = head_;
-    if (!tmp) {
-        std::cout << "List is empty" << std::endl;
-        return;
-    }
-    filepath += tmp->data + ":\\";
-    tmp = tmp->next;
-    while (tmp) {
-        if (!tmp->next)
-            break;
-        filepath += tmp->data + "\\";
-        tmp = tmp->next;
-    }
-    std::filesystem::path path{ filepath };
-    path /= tail_->data;
-    std::filesystem::create_directories(path.parent_path());
-    std::ofstream ofs(path);
-    ofs.close();
 }
 
 #endif
