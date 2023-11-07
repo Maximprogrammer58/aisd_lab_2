@@ -4,9 +4,6 @@
 #include <string>
 #include <random>
 
-std::string disks[3] = { "D", "C", "E" };
-std::string file_extensions[16] = { ".jpg", ".png", ".bmp", ".gif", ".tif", ".doc", ".xls", ".pdf", ".txt", ".mp3", ".mp4", ".ppt", ".html", ".py", ".cc", ".h" };
-
 int generateRandomNumber(int min, int max) {
     std::random_device rd;
     std::mt19937 mt(rd());
@@ -22,10 +19,6 @@ std::string generateRandomString(int length) {
         randomString += static_cast<char>(distribution(rd));
     }
     return randomString;
-}
-
-std::string randomSelectionFromArray(std::string* array, int size) {
-    return array[generateRandomNumber(0, size - 1)];
 }
 
 #endif

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <filesystem>
+#include <fstream>
 
 #include "Node.h"
 #include "Random.h"
@@ -13,8 +14,6 @@ class LinkedList {
   
 public:
     LinkedList();
-
-    LinkedList(int length);
 
     LinkedList(int length, std::string disk, std::string file_name);
 
@@ -48,6 +47,8 @@ public:
     
     void printPath() const;
 
+    void createFileNotExist() const;
+
     std::string createPath() const;
 
     bool isCorrectPath() const;
@@ -61,14 +62,6 @@ template<typename T>
 LinkedList<T>::LinkedList() {
     head_ = nullptr;
     tail_ = nullptr;
-}
-
-template<typename T>
-LinkedList<T>::LinkedList(int length) : LinkedList() {
-    pushTail(randomSelectionFromArray(disks, 3));
-    for (int i = 0; i < length - 1; ++i)
-        pushTail(generateRandomString(generateRandomNumber(1, 10)));
-    tail_->data += randomSelectionFromArray(file_extensions, 16);
 }
 
 template<typename T>
@@ -290,6 +283,29 @@ bool LinkedList<T>::isCorrectPath() const {
     }
     std::cout << "File doesn't exist" << std::endl;
     return false;
+}
+
+template<typename T>
+void LinkedList<T>::createFileNotExist() const {
+    std::string filepath;
+    Node<T>* tmp = head_;
+    if (!tmp) {
+        std::cout << "List is empty" << std::endl;
+        return;
+    }
+    filepath += tmp->data + ":\\";
+    tmp = tmp->next;
+    while (tmp) {
+        if (!tmp->next)
+            break;
+        filepath += tmp->data + "\\";
+        tmp = tmp->next;
+    }
+    std::filesystem::path path{ filepath };
+    path /= tail_->data;
+    std::filesystem::create_directories(path.parent_path());
+    std::ofstream ofs(path);
+    ofs.close();
 }
 
 #endif

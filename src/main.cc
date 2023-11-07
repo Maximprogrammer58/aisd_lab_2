@@ -10,26 +10,14 @@ int main()
     lst.pushTail("dataset.csv");
     lst.printPath();
     lst.isCorrectPath();
-    /* 
-    D:\Python_lab\python_lab\datasets\dataset.csv
-    File exists
-    */
 
-    LinkedList<std::string> rand_lst1(5, "D", "main.cc");
+    LinkedList<std::string> rand_lst1(5, "C", "main.cc");
     rand_lst1.printPath();
     rand_lst1.isCorrectPath();
-    /*
-    D:\ifgxmqa\wjnynroqe\uiwcayr\main.cc
-    File doesn't exist
-    */
 
-    LinkedList<std::string> rand_lst2(7);
+    LinkedList<std::string> rand_lst2(3, "D", "example.cc");
+    rand_lst2.createFileNotExist();
     rand_lst2.printPath();
     rand_lst2.isCorrectPath();
-    /*
-    C:\clj\keejfbujqo\noaaboqfyu\pzjabs\q\lj.cc
-    File doesn't exist
-    */
-
     return 0;
 }
